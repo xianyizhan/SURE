@@ -1,0 +1,21 @@
+{
+  "name": "node-red-contrib-tcpin-port",
+  "version": "1.0.0",
+  "description": "using TCP-in with dynamically port control.",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "keywords": [
+    "tcp",
+    "port"
+  ],
+  "author": "xianyi zhan",
+  "license": "ISC",
+  "ndoe-red": {
+    "nodes": {
+      "tcpin-port": "tcpin-port.js"
+    }
+  }
+
+}
