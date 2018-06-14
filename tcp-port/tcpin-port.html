@@ -1,0 +1,40 @@
+<script type="text/x-red" data-template-name="tcpin-port">
+    <div class="form-row">
+        <label for="node-input-server"><i class="fa fa-dot-circle-o"></i> <span data-i18n="tcpin.label.type"></span></label>
+        <select id="node-input-server" style="width:120px; margin-right:5px;">
+            <option value="server" data-i18n="tcpin.type.listen"></option>
+            <option value="client" data-i18n="tcpin.type.connect"></option>
+        </select>
+        <span data-i18n="tcpin.label.port"></span> <input type="text" id="node-input-port" style="width:65px">
+    </div>
+
+
+    
+    <div class="form-row hidden" id="node-input-host-row" style="padding-left: 110px;">
+        <span data-i18n="tcpin.label.host"></span> <input type="text" id="node-input-host" placeholder="localhost" style="width: 60%;">
+    </div>
+    <div class="form-row">
+        <label><i class="fa fa-sign-out"></i> <span data-i18n="tcpin.label.output"></span></label>
+        <select id="node-input-datamode" style="width:110px;">
+            <option value="stream" data-i18n="tcpin.output.stream"></option>
+            <option value="single" data-i18n="tcpin.output.single"></option>
+        </select>
+        <select id="node-input-datatype" style="width:140px;">
+            <option value="buffer" data-i18n="tcpin.output.buffer"></option>
+            <option value="utf8" data-i18n="tcpin.output.string"></option>
+            <option value="base64" data-i18n="tcpin.output.base64"></option>
+        </select>
+        <span data-i18n="tcpin.label.payload"></span>
+    </div>
+    <div id="node-row-newline" class="form-row hidden" style="padding-left:110px;">
+        <span data-i18n="tcpin.label.delimited"></span> <input type="text" id="node-input-newline" style="width:110px;">
+    </div>
+    <div class="form-row">
+        <label for="node-input-topic"><i class="fa fa-tasks"></i> <span data-i18n="common.label.topic"></span></label>
+        <input type="text" id="node-input-topic" data-i18n="[placeholder]common.label.topic">
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> <span data-i18n="common.label.name"></span></label>
+        <input type="text" id="node-input-name" data-i18n="[placeholder]common.label.name">
+    </div>
+</script>
