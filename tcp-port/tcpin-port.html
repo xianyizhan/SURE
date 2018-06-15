@@ -9,7 +9,7 @@
     </div>
 
 
-    
+
     <div class="form-row hidden" id="node-input-host-row" style="padding-left: 110px;">
         <span data-i18n="tcpin.label.host"></span> <input type="text" id="node-input-host" placeholder="localhost" style="width: 60%;">
     </div>
@@ -38,3 +38,12 @@
         <input type="text" id="node-input-name" data-i18n="[placeholder]common.label.name">
     </div>
 </script>
+
+<script type="text/x-red" data-help-name="tcpin-port">
+    <p>Provides a choice of TCP inputs. Can either connect to a remote TCP port,
+    or accept incoming connections. The port can be set dynamically.</p>
+    <p>If you leave tcp port blank they must be set by using the <code>msg.port</code> properties.</p>
+    <p><b>Note: </b>On some systems you may need root or administrator access
+    to access ports below 1024.</p>
+</script>
+
