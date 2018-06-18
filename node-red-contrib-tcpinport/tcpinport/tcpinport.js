@@ -223,6 +223,6 @@ module.exports = function(RED) {
 
         
     }   
-    RED.nodes.registerType("tcpin-port",TcpInPort);
+    RED.nodes.registerType("tcpinport",TcpInPort);
 }
 

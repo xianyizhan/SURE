@@ -1,10 +1,10 @@
 {
-  "name": "node-red-contrib-tcpin-port",
+  "name": "node-red-contrib-tcpinport",
   "version": "1.0.0",
   "description": "using TCP-in with dynamically port control.",
-  "main": "tcpin-port.js",
+  "main": "tcpinport.js",
   "scripts": {
-    "start": "node tcpin-port.js"
+    "start": "node tcpinport.js"
   },
   "keywords": [
     "tcp",
@@ -14,7 +14,7 @@
   "license": "MIT",
   "ndoe-red": {
     "nodes": {
-      "tcpin-port": "tcpin-port/tcpin-port.js"
+      "tcpinport": "tcpinport/tcpinport.js"
     }
   },
   "repository": {

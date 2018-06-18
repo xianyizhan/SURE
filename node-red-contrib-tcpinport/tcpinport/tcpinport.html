@@ -1,4 +1,4 @@
-<script type="text/x-red" data-template-name="tcpin-port">
+<script type="text/x-red" data-template-name="tcpinport">
     <div class="form-row">
         <label for="node-input-server"><i class="fa fa-dot-circle-o"></i> <span data-i18n="tcpin.label.type"></span></label>
         <select id="node-input-server" style="width:120px; margin-right:5px;">
@@ -39,7 +39,7 @@
     </div>
 </script>
 
-<script type="text/x-red" data-help-name="tcpin-port">
+<script type="text/x-red" data-help-name="tcpinport">
     <p>Provides a choice of TCP inputs. Can either connect to a remote TCP port,
     or accept incoming connections. The port can be set dynamically.</p>
     <p>If you leave tcp port blank they must be set by using the <code>msg.port</code> properties.</p>
@@ -48,7 +48,7 @@
 </script>
 
 <script type="text/javascript">
-    RED.nodes.registerType('tcpin-port',{
+    RED.nodes.registerType('tcpinport',{
         category: 'tcpport',
         color:"Silver",
         defaults: {
