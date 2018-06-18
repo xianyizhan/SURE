@@ -16,5 +16,9 @@
     "nodes": {
       "tcpin-port": "tcpin-port/tcpin-port.js"
     }
+  },
+  "repository": {
+  	"type": "git",
+  	"url": "git://github.com/xianyizhan/SURE.git"
   }
 }
