@@ -126,9 +126,9 @@ module.exports = function(RED) {
                     clearTimeout(reconnectTimeout);
                     if (!node.connected) { done(); }
                 });
-            }
+            });
         }
-        else{
+        else {
             var server = net.createServer(function (socket) {
                 socket.setKeepAlive(true,120000);
                 if (socketTimeout !== null) { socket.setTimeout(socketTimeout); }
@@ -219,9 +219,7 @@ module.exports = function(RED) {
                     });
                 }
             });
-        }
-
-        
+        }    
     }   
     RED.nodes.registerType("tcpinport",TcpInPort);
 }

@@ -1,41 +1,41 @@
 <script type="text/x-red" data-template-name="tcpinport">
     <div class="form-row">
-        <label for="node-input-server"><i class="fa fa-dot-circle-o"></i> <span data-i18n="tcpin.label.type"></span></label>
+        <label for="node-input-server"><i class="fa fa-dot-circle-o"></i> Type </label>
         <select id="node-input-server" style="width:120px; margin-right:5px;">
-            <option value="server" data-i18n="tcpin.type.listen"></option>
-            <option value="client" data-i18n="tcpin.type.connect"></option>
+            <option value="server"> listen on </option>
+            <option value="client"> connect to </option>
         </select>
-        <span data-i18n="tcpin.label.port"></span> <input type="text" id="node-input-port" style="width:65px">
+        Port <input type="text" id="node-input-port" style="width:65px">
     </div>
 
 
 
     <div class="form-row hidden" id="node-input-host-row" style="padding-left: 110px;">
-        <span data-i18n="tcpin.label.host"></span> <input type="text" id="node-input-host" placeholder="localhost" style="width: 60%;">
+        at host <input type="text" id="node-input-host" placeholder="localhost" style="width: 60%;">
     </div>
     <div class="form-row">
-        <label><i class="fa fa-sign-out"></i> <span data-i18n="tcpin.label.output"></span></label>
+        <label><i class="fa fa-sign-out"></i> output </span></label>
         <select id="node-input-datamode" style="width:110px;">
-            <option value="stream" data-i18n="tcpin.output.stream"></option>
-            <option value="single" data-i18n="tcpin.output.single"></option>
+            <option value="stream"> stream of </option>
+            <option value="single"> single </option>
         </select>
         <select id="node-input-datatype" style="width:140px;">
-            <option value="buffer" data-i18n="tcpin.output.buffer"></option>
-            <option value="utf8" data-i18n="tcpin.output.string"></option>
-            <option value="base64" data-i18n="tcpin.output.base64"></option>
+            <option value="buffer"> buffer </option>
+            <option value="utf8"> String </option>
+            <option value="base64"> Base64 String </option>
         </select>
-        <span data-i18n="tcpin.label.payload"></span>
+        payload(s)
     </div>
     <div id="node-row-newline" class="form-row hidden" style="padding-left:110px;">
-        <span data-i18n="tcpin.label.delimited"></span> <input type="text" id="node-input-newline" style="width:110px;">
+        delimited by <input type="text" id="node-input-newline" style="width:110px;">
     </div>
     <div class="form-row">
-        <label for="node-input-topic"><i class="fa fa-tasks"></i> <span data-i18n="common.label.topic"></span></label>
-        <input type="text" id="node-input-topic" data-i18n="[placeholder]common.label.topic">
+        <label for="node-input-topic"><i class="fa fa-tasks"></i> Topic </label>
+        <input type="text" id="node-input-topic" placeholder = "Topic">
     </div>
     <div class="form-row">
-        <label for="node-input-name"><i class="fa fa-tag"></i> <span data-i18n="common.label.name"></span></label>
-        <input type="text" id="node-input-name" data-i18n="[placeholder]common.label.name">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder = "Name">
     </div>
 </script>
 

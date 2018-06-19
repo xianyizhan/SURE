@@ -1,24 +1,13 @@
 {
-  "name": "node-red-contrib-tcpinport",
-  "version": "1.0.0",
-  "description": "using TCP-in with dynamically port control.",
-  "main": "tcpinport.js",
-  "scripts": {
-    "start": "node tcpinport.js"
-  },
-  "keywords": [
-    "tcp",
-    "port"
-  ],
-  "author": "xianyi zhan",
-  "license": "MIT",
-  "ndoe-red": {
-    "nodes": {
-      "tcpinport": "tcpinport/tcpinport.js"
+    "name"         : "node-red-contrib-tcpinport",
+    "version"      : "0.0.1",
+    "description"  : "using TCP-in with dynamically port control",
+    "dependencies": {
+    },
+    "keywords": [ "node-red" ],
+    "node-red"     : {
+        "nodes": {
+            "sample": "tcpinport/tcpinport.js"
+        }
     }
-  },
-  "repository": {
-  	"type": "git",
-  	"url": "git://github.com/xianyizhan/SURE.git"
-  }
 }
