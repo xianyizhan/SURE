@@ -1,0 +1,74 @@
+[
+    {
+        "id": "f529dfd2.3a93f",
+        "type": "tab",
+        "label": "TCP_local",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "d586c4a5.ce5608",
+        "type": "inject",
+        "z": "f529dfd2.3a93f",
+        "name": "",
+        "topic": "",
+        "payload": "hi you",
+        "payloadType": "str",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 110,
+        "y": 100,
+        "wires": [
+            [
+                "82cd61c4.a0738"
+            ]
+        ]
+    },
+    {
+        "id": "ba553743.009098",
+        "type": "debug",
+        "z": "f529dfd2.3a93f",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 430,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "82cd61c4.a0738",
+        "type": "function",
+        "z": "f529dfd2.3a93f",
+        "name": "to buffer",
+        "func": "var b = new Buffer(msg.payload);\nmsg.payload = b;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 120,
+        "y": 220,
+        "wires": [
+            [
+                "ba553743.009098",
+                "c75261f9.a4267"
+            ]
+        ]
+    },
+    {
+        "id": "c75261f9.a4267",
+        "type": "tcp out",
+        "z": "f529dfd2.3a93f",
+        "host": "192.168.1.100",
+        "port": "5678",
+        "beserver": "client",
+        "base64": false,
+        "end": false,
+        "name": "",
+        "x": 250,
+        "y": 380,
+        "wires": []
+    }
+]

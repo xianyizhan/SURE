@@ -1,0 +1,255 @@
+[
+    {
+        "id": "4e05cb37.26aa04",
+        "type": "tab",
+        "label": "beacon_Scanner",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "722d0147.ecf86",
+        "type": "scan ble",
+        "z": "4e05cb37.26aa04",
+        "uuids": "",
+        "duplicates": true,
+        "name": "ble_Scanner",
+        "x": 147,
+        "y": 124,
+        "wires": [
+            [
+                "fb6ba361.ac14b"
+            ]
+        ],
+        "inputLabels": [
+            "msg.payload.scan"
+        ]
+    },
+    {
+        "id": "fb6ba361.ac14b",
+        "type": "function",
+        "z": "4e05cb37.26aa04",
+        "name": "filter_Beacon",
+        "func": "var tarMin = \"0cf3ee000000\";\nvar tarMax = \"0cf3eeffffff\";\n// the target uuid is within the range of 0x0cf3ee... because only the frist three octets are the common adress\nif (msg.peripheralUuid >= tarMin && msg.peripheralUuid <= tarMax){\nreturn msg;\n}\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 184,
+        "y": 228,
+        "wires": [
+            [
+                "e9d3ff4e.173d",
+                "1203a87e.910328"
+            ]
+        ]
+    },
+    {
+        "id": "8ca08a04.73e858",
+        "type": "ui_switch",
+        "z": "4e05cb37.26aa04",
+        "name": "switch",
+        "label": "scanner switch",
+        "group": "8fc28943.622458",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "decouple": "false",
+        "topic": "",
+        "style": "",
+        "onvalue": "{\"scan\":true}",
+        "onvalueType": "json",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "{\"scan\":false}",
+        "offvalueType": "json",
+        "officon": "",
+        "offcolor": "",
+        "x": 70,
+        "y": 20,
+        "wires": [
+            [
+                "722d0147.ecf86"
+            ]
+        ]
+    },
+    {
+        "id": "c062536.2833ab",
+        "type": "ui_gauge",
+        "z": "4e05cb37.26aa04",
+        "name": "rssi_8506",
+        "group": "8fc28943.622458",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "beacon8506",
+        "label": "units",
+        "format": "{{value}}",
+        "min": "-200",
+        "max": "0",
+        "colors": [
+            "#ca3838",
+            "#e6e600",
+            "#00b500"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "x": 658,
+        "y": 406,
+        "wires": []
+    },
+    {
+        "id": "e9d3ff4e.173d",
+        "type": "function",
+        "z": "4e05cb37.26aa04",
+        "name": "beacon_8506",
+        "func": "var tar = \"0cf3ee0d4007\";\nvar wait = 10; // time out if device is out of range\nvar count = context.get('count')||0; //set counter\n\n// the target uuid is the required device \nif (msg.peripheralUuid == tar){\n    //display rssi value\n    var x = msg.rssi; \n    msg.payload = x;\n    // device detected, counter = 0\n    count = 0;\n    context.set('count',count);\n    msg.count = count;\n    return msg;\n}\nelse if (msg.peripheralUuid != tar){\n    // not our device, counter++;\n    count += 1;\n    context.set('count',count);\n    msg.count = count;\n    // we have not receive the signal of target \n    // for a while, say that it is offline or \n    // out of range. \n    if (msg.count > wait){\n        msg.payload = -200;\n        // reset counter for next use\n        count = 0;\n        context.set('count',count);\n        msg.count = count;\n        return msg;\n    }\n    \n}\n\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 421,
+        "y": 406,
+        "wires": [
+            [
+                "c062536.2833ab",
+                "5948ab13.0734e4"
+            ]
+        ]
+    },
+    {
+        "id": "120f2f98.796a9",
+        "type": "ui_gauge",
+        "z": "4e05cb37.26aa04",
+        "name": "rssi_25015",
+        "group": "8fc28943.622458",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "beacon25015",
+        "label": "units",
+        "format": "{{value}}",
+        "min": "-200",
+        "max": "-10",
+        "colors": [
+            "#ca3838",
+            "#e6e600",
+            "#00b500"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "x": 652,
+        "y": 493,
+        "wires": []
+    },
+    {
+        "id": "7fc01c8f.dae944",
+        "type": "ui_toast",
+        "z": "4e05cb37.26aa04",
+        "position": "top right",
+        "displayTime": "3",
+        "highlight": "",
+        "outputs": 0,
+        "ok": "OK",
+        "cancel": "",
+        "topic": "beacon 8506",
+        "name": "beacon 8506",
+        "x": 671,
+        "y": 283,
+        "wires": []
+    },
+    {
+        "id": "4aed3443.69831c",
+        "type": "function",
+        "z": "4e05cb37.26aa04",
+        "name": "8506_off/on_Notif",
+        "func": "var notif_8506 = context.get('notif_8506')||0;\nif (msg.payload == -200){\n    msg.payload = \"No. 8506 is out of range\";\n    notif_8506 = 0;\n    context.set('notif_8506',notif_8506);\n    msg.notif_8506 = notif_8506;\n    return msg;\n}\nif(msg.payload != -200 && msg.notif_8506 == \"0\"){\n    msg.payload = \"No. 8506 is in the range\";\n    notif_8506 = 1;\n    context.set('notif_8506',notif_8506);\n    msg.notif_8506 = notif_8506;\n    return msg;\n}\n// the delay is too much, give up for this node",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 710,
+        "y": 40,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "1203a87e.910328",
+        "type": "function",
+        "z": "4e05cb37.26aa04",
+        "name": "beacon_25015",
+        "func": "var tar = \"0cf3ee0061b7\";\nvar wait = 10; // time out if device is out of range\nvar count2 = context.get('count2')||0; //set counter\n\n// the target uuid is the required device \nif (msg.peripheralUuid == tar){\n    //display rssi value\n    var x = msg.rssi; \n    msg.payload = x;\n    // device detected, counter = 0\n    count2 = 0;\n    context.set('count2',count2);\n    msg.count2 = count2;\n    return msg;\n}\nelse if (msg.peripheralUuid != tar){\n    // not our device, counter++;\n    count2 += 1;\n    context.set('count2',count2);\n    msg.count2 = count2;\n    // we have not receive the signal of target \n    // for a while, say that it is offline or \n    // out of range. \n    if (msg.count2 > wait){\n        msg.payload = -200;\n        // reset counter for next use\n        count2 = 0;\n        context.set('count2',count2);\n        msg.count2 = count2;\n        return msg;\n    }\n    \n}\n\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 390,
+        "y": 523,
+        "wires": [
+            [
+                "120f2f98.796a9",
+                "b1ec4642.bc05d8"
+            ]
+        ]
+    },
+    {
+        "id": "5948ab13.0734e4",
+        "type": "function",
+        "z": "4e05cb37.26aa04",
+        "name": "8506_offline_Notif",
+        "func": "// if rssi value = -200, we say that the device is offline. \nif (msg.payload == -200){\n    msg.payload = \"No. 8506 is out of range\";\n    return msg;\n}",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 451,
+        "y": 284,
+        "wires": [
+            [
+                "7fc01c8f.dae944"
+            ]
+        ]
+    },
+    {
+        "id": "eb2c0bcd.9090b8",
+        "type": "ui_toast",
+        "z": "4e05cb37.26aa04",
+        "position": "top right",
+        "displayTime": "3",
+        "highlight": "",
+        "outputs": 0,
+        "ok": "OK",
+        "cancel": "",
+        "topic": "beacon 25015",
+        "name": "beacon 25015",
+        "x": 661,
+        "y": 666,
+        "wires": []
+    },
+    {
+        "id": "b1ec4642.bc05d8",
+        "type": "function",
+        "z": "4e05cb37.26aa04",
+        "name": "25015_offline_Notif",
+        "func": "// if rssi value = -200, we say that the device is offline. \nif (msg.payload == -200){\n    msg.payload = \"No. 25015 is out of range\";\n    return msg;\n}",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 435,
+        "y": 666,
+        "wires": [
+            [
+                "eb2c0bcd.9090b8"
+            ]
+        ]
+    },
+    {
+        "id": "8fc28943.622458",
+        "type": "ui_group",
+        "z": "",
+        "name": "Test",
+        "tab": "1a539010.0adf5",
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "1a539010.0adf5",
+        "type": "ui_tab",
+        "z": "",
+        "name": "Test",
+        "icon": "dashboard"
+    }
+]

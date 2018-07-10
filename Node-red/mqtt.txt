@@ -1,0 +1,319 @@
+[
+    {
+        "id": "6ae3b9a.abb5c48",
+        "type": "tab",
+        "label": "mqtt_server",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "bbd3eea3.5e7fa",
+        "type": "mosca in",
+        "z": "6ae3b9a.abb5c48",
+        "mqtt_port": "11883",
+        "mqtt_ws_port": 8080,
+        "name": "",
+        "username": "",
+        "password": "",
+        "dburl": "",
+        "x": 160,
+        "y": 260,
+        "wires": [
+            [
+                "c69c9341.a7792"
+            ]
+        ]
+    },
+    {
+        "id": "c69c9341.a7792",
+        "type": "debug",
+        "z": "6ae3b9a.abb5c48",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 420,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "4c7e3c0b.301c14",
+        "type": "mqtt out",
+        "z": "6ae3b9a.abb5c48",
+        "name": "Lamp",
+        "topic": "room/lamp",
+        "qos": "2",
+        "retain": "",
+        "broker": "2b5baffe.399af",
+        "x": 610,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "944232c4.796b7",
+        "type": "mqtt in",
+        "z": "6ae3b9a.abb5c48",
+        "name": "Temperature",
+        "topic": "room/temperature",
+        "qos": "2",
+        "broker": "2b5baffe.399af",
+        "x": 90,
+        "y": 620,
+        "wires": [
+            [
+                "eca52995.7f1e58",
+                "69c3415c.ad4c6"
+            ]
+        ]
+    },
+    {
+        "id": "de7e1b49.7dd858",
+        "type": "mqtt in",
+        "z": "6ae3b9a.abb5c48",
+        "name": "Humidity",
+        "topic": "room/humidity",
+        "qos": "2",
+        "broker": "2b5baffe.399af",
+        "x": 80,
+        "y": 680,
+        "wires": [
+            [
+                "eca52995.7f1e58",
+                "69c3415c.ad4c6"
+            ]
+        ]
+    },
+    {
+        "id": "e5d7c87f.af76f8",
+        "type": "tcp request",
+        "z": "6ae3b9a.abb5c48",
+        "server": "",
+        "port": "",
+        "out": "sit",
+        "splitc": " ",
+        "name": "tcp_mqtt",
+        "x": 440,
+        "y": 680,
+        "wires": [
+            [
+                "f89ba272.e2689"
+            ]
+        ]
+    },
+    {
+        "id": "bdc0e61a.db8ea8",
+        "type": "function",
+        "z": "6ae3b9a.abb5c48",
+        "name": "Set up host",
+        "func": "\nvar mqttHost = context.get('mqttHost')||0; //set counter\nvar mqttPort = context.get('mqttPort')||0;\n\nif((typeof msg.payload.mqtt_host != \"undefined\")&&(typeof msg.payload.mqtt_port != \"undefined\")){\n    mqttHost = msg.payload.mqtt_host;\n    context.set('mqttHost',mqttHost);\n    \n    mqttPort = msg.payload.mqtt_port;\n    context.set('mqttPort',mqttPort);\n    \n    msg.payload = \"{\\\"id\\\": \\\"connect\\\"}\";\n}\nmsg.host = mqttHost;\nmsg.port = mqttPort;\n\nreturn msg; \n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 350,
+        "y": 760,
+        "wires": [
+            [
+                "e5d7c87f.af76f8"
+            ]
+        ]
+    },
+    {
+        "id": "9b975a10.d96328",
+        "type": "ui_form",
+        "z": "6ae3b9a.abb5c48",
+        "name": "",
+        "label": "",
+        "group": "2329175e.ba2ef8",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "options": [
+            {
+                "label": "mqtt Host",
+                "value": "mqtt_host",
+                "type": "text",
+                "required": false
+            },
+            {
+                "label": "mqtt Port",
+                "value": "mqtt_port",
+                "type": "text",
+                "required": false
+            }
+        ],
+        "formValue": {
+            "mqtt_host": "",
+            "mqtt_port": ""
+        },
+        "payload": "",
+        "topic": "",
+        "x": 90,
+        "y": 480,
+        "wires": [
+            [
+                "bdc0e61a.db8ea8"
+            ]
+        ]
+    },
+    {
+        "id": "183a0603.03e7ea",
+        "type": "function",
+        "z": "6ae3b9a.abb5c48",
+        "name": "switch_set_lamp",
+        "func": "if(msg.payload.id == \"mqttswitch\"){\n    var b = msg.payload.message.toString();\n    msg.payload = b;\n    return msg;\n} ",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 710,
+        "y": 880,
+        "wires": [
+            [
+                "4c7e3c0b.301c14",
+                "cf88b8a3.826a58"
+            ]
+        ]
+    },
+    {
+        "id": "f89ba272.e2689",
+        "type": "function",
+        "z": "6ae3b9a.abb5c48",
+        "name": "to string",
+        "func": "msg.payload = msg.payload.toString();\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 600,
+        "y": 700,
+        "wires": [
+            [
+                "8398deb9.0b85"
+            ]
+        ]
+    },
+    {
+        "id": "8398deb9.0b85",
+        "type": "json",
+        "z": "6ae3b9a.abb5c48",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 510,
+        "y": 860,
+        "wires": [
+            [
+                "183a0603.03e7ea"
+            ]
+        ]
+    },
+    {
+        "id": "eca52995.7f1e58",
+        "type": "function",
+        "z": "6ae3b9a.abb5c48",
+        "name": "toString",
+        "func": "if(msg._topic == \"room/humidity\"){\n    var string = msg.payload.toString();\n    msg.payload = \"{\\\"id\\\": \\\"mqttHumi_toPC\\\", \\\"message\\\": \\\"\" + string +\"\\\" }\";\n    return msg;\n}\nif(msg._topic == \"room/temperature\"){\n    var string = msg.payload.toString();\n    msg.payload = \"{\\\"id\\\": \\\"mqttTemp_toPC\\\", \\\"message\\\": \\\"\" + string +\"\\\" }\";\n    return msg;\n}\n\nif(msg._topic == \"room/motion\"){\n    var string = msg.payload.toString();\n    msg.payload = \"{\\\"id\\\": \\\"mqttMotion_toPC\\\", \\\"message\\\": \\\"\" + string +\"\\\" }\";\n    return msg;\n}",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 170,
+        "y": 840,
+        "wires": [
+            [
+                "bdc0e61a.db8ea8"
+            ]
+        ]
+    },
+    {
+        "id": "cf88b8a3.826a58",
+        "type": "debug",
+        "z": "6ae3b9a.abb5c48",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 740,
+        "y": 1000,
+        "wires": []
+    },
+    {
+        "id": "69c3415c.ad4c6",
+        "type": "debug",
+        "z": "6ae3b9a.abb5c48",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "x": 430,
+        "y": 580,
+        "wires": []
+    },
+    {
+        "id": "9a1b41a3.b97c6",
+        "type": "mqtt in",
+        "z": "6ae3b9a.abb5c48",
+        "name": "Motion",
+        "topic": "room/motion",
+        "qos": "2",
+        "broker": "2b5baffe.399af",
+        "x": 90,
+        "y": 940,
+        "wires": [
+            [
+                "2ac762ce.bd626e",
+                "eca52995.7f1e58"
+            ]
+        ]
+    },
+    {
+        "id": "2ac762ce.bd626e",
+        "type": "debug",
+        "z": "6ae3b9a.abb5c48",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "x": 340,
+        "y": 1020,
+        "wires": []
+    },
+    {
+        "id": "2b5baffe.399af",
+        "type": "mqtt-broker",
+        "z": "",
+        "name": "",
+        "broker": "localhost",
+        "port": "11883",
+        "clientid": "",
+        "usetls": false,
+        "compatmode": true,
+        "keepalive": "60",
+        "cleansession": true,
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": ""
+    },
+    {
+        "id": "2329175e.ba2ef8",
+        "type": "ui_group",
+        "z": "",
+        "name": "Set Up",
+        "tab": "3a71d832.f4e3b8",
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "3a71d832.f4e3b8",
+        "type": "ui_tab",
+        "z": "",
+        "name": "Room",
+        "icon": "dashboard"
+    }
+]
