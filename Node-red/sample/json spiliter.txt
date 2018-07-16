@@ -1,0 +1,153 @@
+[
+    {
+        "id": "8564dbac.c944d8",
+        "type": "tab",
+        "label": "Flow 3",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "fe820763.92bd78",
+        "type": "inject",
+        "z": "8564dbac.c944d8",
+        "name": "Set temp to 20",
+        "topic": "",
+        "payload": "{\"foo\":20}{\"bar\":30}{\"doh\":40}",
+        "payloadType": "str",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": "",
+        "x": 98,
+        "y": 208,
+        "wires": [
+            [
+                "d21c352b.c2b188",
+                "ac259af1.9d7e38"
+            ]
+        ]
+    },
+    {
+        "id": "d21c352b.c2b188",
+        "type": "function",
+        "z": "8564dbac.c944d8",
+        "name": "}{ splitter",
+        "func": "\nwhile (msg.payload.indexOf(\"}{\") !== -1) {\n    var s = msg.payload.indexOf(\"}{\");\n    var a = msg.payload.substr(0,s+1);\n    node.send({payload:a});\n    msg.payload = msg.payload.substr(s+1);\n}\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 304,
+        "y": 174,
+        "wires": [
+            [
+                "29dd6ebe.6b1196",
+                "2908f1a5.7f35de"
+            ]
+        ]
+    },
+    {
+        "id": "29dd6ebe.6b1196",
+        "type": "json",
+        "z": "8564dbac.c944d8",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 486,
+        "y": 175,
+        "wires": [
+            [
+                "f230de7d.2e00b"
+            ]
+        ]
+    },
+    {
+        "id": "f230de7d.2e00b",
+        "type": "debug",
+        "z": "8564dbac.c944d8",
+        "name": "",
+        "active": true,
+        "console": "false",
+        "complete": "false",
+        "x": 656,
+        "y": 205,
+        "wires": []
+    },
+    {
+        "id": "ac259af1.9d7e38",
+        "type": "debug",
+        "z": "8564dbac.c944d8",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 320,
+        "y": 258.72998046875,
+        "wires": []
+    },
+    {
+        "id": "2908f1a5.7f35de",
+        "type": "debug",
+        "z": "8564dbac.c944d8",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 512,
+        "y": 248.72998046875,
+        "wires": []
+    },
+    {
+        "id": "8046cc9c.07759",
+        "type": "inject",
+        "z": "8564dbac.c944d8",
+        "name": "Set temp to 20",
+        "topic": "",
+        "payload": "{\"foo\":20, \"bar\":30, \"doh\":40}",
+        "payloadType": "str",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": "",
+        "x": 137,
+        "y": 447,
+        "wires": [
+            [
+                "e2f140af.15b33"
+            ]
+        ]
+    },
+    {
+        "id": "e2f140af.15b33",
+        "type": "json",
+        "z": "8564dbac.c944d8",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 321,
+        "y": 443,
+        "wires": [
+            [
+                "c0ca1b5e.903a18"
+            ]
+        ]
+    },
+    {
+        "id": "c0ca1b5e.903a18",
+        "type": "debug",
+        "z": "8564dbac.c944d8",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 509,
+        "y": 446,
+        "wires": []
+    }
+]
