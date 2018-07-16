@@ -1,0 +1,393 @@
+[
+    {
+        "id": "b5b0f440.1805c",
+        "type": "tab",
+        "label": "mqtt_client",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "950612bc.87b12",
+        "type": "ui_switch",
+        "z": "b5b0f440.1805c",
+        "name": "",
+        "label": "switch",
+        "group": "7a482ba6.9c5c7c",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "decouple": "false",
+        "topic": "room/lamp",
+        "style": "",
+        "onvalue": "on",
+        "onvalueType": "str",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "off",
+        "offvalueType": "str",
+        "officon": "",
+        "offcolor": "",
+        "x": 141,
+        "y": 637.75,
+        "wires": [
+            [
+                "7267ff66.f55a44"
+            ]
+        ]
+    },
+    {
+        "id": "1ff56f2b.0caef5",
+        "type": "ui_gauge",
+        "z": "b5b0f440.1805c",
+        "name": "Humidity",
+        "group": "fc8a7841.d1bca8",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "gauge",
+        "label": "units",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#00B500",
+            "#E6E600",
+            "#CA3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "x": 702,
+        "y": 143.75,
+        "wires": []
+    },
+    {
+        "id": "c4420c74.0e5d9",
+        "type": "ui_gauge",
+        "z": "b5b0f440.1805c",
+        "name": "Temperature",
+        "group": "b064caae.39df88",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "gauge",
+        "label": "units",
+        "format": "{{value}}",
+        "min": "-50",
+        "max": "50",
+        "colors": [
+            "#00B500",
+            "#E6E600",
+            "#CA3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "x": 694,
+        "y": 423.75,
+        "wires": []
+    },
+    {
+        "id": "48f6b29e.e52ddc",
+        "type": "ui_form",
+        "z": "b5b0f440.1805c",
+        "name": "",
+        "label": "Port",
+        "group": "762b88ef.e1b7c4",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "options": [
+            {
+                "label": "mqtt Port",
+                "value": "mqtt_port",
+                "type": "text",
+                "required": false
+            }
+        ],
+        "formValue": {
+            "mqtt_port": ""
+        },
+        "payload": "",
+        "topic": "",
+        "x": 115,
+        "y": 309,
+        "wires": [
+            [
+                "927b02de.7de208"
+            ]
+        ]
+    },
+    {
+        "id": "927b02de.7de208",
+        "type": "function",
+        "z": "b5b0f440.1805c",
+        "name": "toMsgPort_Xbee",
+        "func": "if(typeof msg.payload.mqtt_port != \"undefined\" ){\n    msg.port = msg.payload.mqtt_port;\n    return msg;\n}\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 149,
+        "y": 408,
+        "wires": [
+            [
+                "370c0276.4cac72"
+            ]
+        ]
+    },
+    {
+        "id": "e6e66b69.ae8ae8",
+        "type": "function",
+        "z": "b5b0f440.1805c",
+        "name": "to string",
+        "func": "msg.payload = msg.payload.toString();\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 423,
+        "y": 218,
+        "wires": [
+            [
+                "f3169844.1ba968"
+            ]
+        ]
+    },
+    {
+        "id": "f3169844.1ba968",
+        "type": "json",
+        "z": "b5b0f440.1805c",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 472,
+        "y": 306.54998779296875,
+        "wires": [
+            [
+                "dcda5822.720b2",
+                "e28610ac.02d77",
+                "88f0eda2.92da9",
+                "a5416ec8.03987"
+            ]
+        ]
+    },
+    {
+        "id": "dcda5822.720b2",
+        "type": "function",
+        "z": "b5b0f440.1805c",
+        "name": "filterOfHumi",
+        "func": "if(msg.payload.id == \"mqttHumi_toPC\"){\n    msg.payload = msg.payload.message;\n    return msg;\n}\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 612,
+        "y": 229,
+        "wires": [
+            [
+                "1ff56f2b.0caef5"
+            ]
+        ]
+    },
+    {
+        "id": "e28610ac.02d77",
+        "type": "function",
+        "z": "b5b0f440.1805c",
+        "name": "filterOfTemp",
+        "func": "if(msg.payload.id == \"mqttTemp_toPC\"){\n    msg.payload = msg.payload.message;\n    return msg;\n}\n\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 652,
+        "y": 285,
+        "wires": [
+            [
+                "c4420c74.0e5d9"
+            ]
+        ]
+    },
+    {
+        "id": "7267ff66.f55a44",
+        "type": "function",
+        "z": "b5b0f440.1805c",
+        "name": "Switch_Confirm",
+        "func": "var string = msg.payload;\nmsg.payload = {\n    boo: \"yes\",\n    data: string\n};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 308,
+        "y": 640,
+        "wires": [
+            [
+                "9002b26f.142e28"
+            ]
+        ]
+    },
+    {
+        "id": "9002b26f.142e28",
+        "type": "function",
+        "z": "b5b0f440.1805c",
+        "name": "switchObjectTransfer",
+        "func": "if(msg.payload.boo == \"yes\"){\n    var swi = msg.payload.data;\n    msg.payload = \"{\\\"id\\\": \\\"mqttswitch\\\", \\\"message\\\": \\\"\" + swi + \"\\\"}\";\n    return msg;\n\n}\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 482,
+        "y": 555.010009765625,
+        "wires": [
+            [
+                "8fdadfef.c62d7"
+            ]
+        ]
+    },
+    {
+        "id": "8fdadfef.c62d7",
+        "type": "tcpoutport",
+        "z": "b5b0f440.1805c",
+        "host": "",
+        "port": "",
+        "beserver": "reply",
+        "base64": false,
+        "end": false,
+        "name": "tcprp_mqtt",
+        "x": 638,
+        "y": 635.3699951171875,
+        "wires": []
+    },
+    {
+        "id": "88f0eda2.92da9",
+        "type": "function",
+        "z": "b5b0f440.1805c",
+        "name": "filterOfMotion",
+        "func": "if(msg.payload.id == \"mqttMotion_toPC\"){\n    msg.payload = msg.payload.message;\n    return msg;\n}\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 526,
+        "y": 484,
+        "wires": [
+            [
+                "abd93039.667738"
+            ]
+        ]
+    },
+    {
+        "id": "abd93039.667738",
+        "type": "ui_text",
+        "z": "b5b0f440.1805c",
+        "group": "3f95d858.4ffb0c",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "name": "Motion",
+        "label": "",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "x": 692,
+        "y": 482.70001220703125,
+        "wires": []
+    },
+    {
+        "id": "a5416ec8.03987",
+        "type": "function",
+        "z": "b5b0f440.1805c",
+        "name": "trigger for lamp ",
+        "func": "if(msg.payload.id == \"mqttTemp_toPC\"){\n    var temp = parseFloat(msg.payload.message);\n    if(temp > 26.5){\n        msg.payload = \"on\";\n        return msg;\n    }\n}\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 176,
+        "y": 569.9099731445312,
+        "wires": [
+            [
+                "efb4ad6b.d0a0e",
+                "7267ff66.f55a44"
+            ]
+        ]
+    },
+    {
+        "id": "efb4ad6b.d0a0e",
+        "type": "debug",
+        "z": "b5b0f440.1805c",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "x": 259,
+        "y": 120.53997802734375,
+        "wires": []
+    },
+    {
+        "id": "370c0276.4cac72",
+        "type": "tcpinport",
+        "z": "b5b0f440.1805c",
+        "name": "",
+        "server": "server",
+        "host": "",
+        "port": "",
+        "datamode": "stream",
+        "datatype": "buffer",
+        "newline": "",
+        "topic": "",
+        "base64": false,
+        "x": 311,
+        "y": 360.469970703125,
+        "wires": [
+            [
+                "e6e66b69.ae8ae8",
+                "9002b26f.142e28"
+            ]
+        ]
+    },
+    {
+        "id": "7a482ba6.9c5c7c",
+        "type": "ui_group",
+        "z": "",
+        "name": "Lamp",
+        "tab": "8a9d5514.a90638",
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "fc8a7841.d1bca8",
+        "type": "ui_group",
+        "z": "",
+        "name": "Humidity",
+        "tab": "8a9d5514.a90638",
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "b064caae.39df88",
+        "type": "ui_group",
+        "z": "",
+        "name": "Temperature",
+        "tab": "8a9d5514.a90638",
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "762b88ef.e1b7c4",
+        "type": "ui_group",
+        "z": "",
+        "name": "Set Up",
+        "tab": "8a9d5514.a90638",
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "3f95d858.4ffb0c",
+        "type": "ui_group",
+        "z": "",
+        "name": "Motion",
+        "tab": "8a9d5514.a90638",
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "8a9d5514.a90638",
+        "type": "ui_tab",
+        "z": "",
+        "name": "Room",
+        "icon": "dashboard"
+    }
+]
