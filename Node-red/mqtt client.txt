@@ -1,15 +1,15 @@
 [
     {
-        "id": "b5b0f440.1805c",
+        "id": "b70a9552.41c498",
         "type": "tab",
         "label": "mqtt_client",
         "disabled": false,
         "info": ""
     },
     {
-        "id": "950612bc.87b12",
+        "id": "36e82a22.b5a57e",
         "type": "ui_switch",
-        "z": "b5b0f440.1805c",
+        "z": "b70a9552.41c498",
         "name": "",
         "label": "switch",
         "group": "7a482ba6.9c5c7c",
@@ -32,14 +32,14 @@
         "y": 637.75,
         "wires": [
             [
-                "7267ff66.f55a44"
+                "c2e2e10.3b74da"
             ]
         ]
     },
     {
-        "id": "1ff56f2b.0caef5",
+        "id": "d9b15ca8.58dd9",
         "type": "ui_gauge",
-        "z": "b5b0f440.1805c",
+        "z": "b70a9552.41c498",
         "name": "Humidity",
         "group": "fc8a7841.d1bca8",
         "order": 0,
@@ -58,14 +58,14 @@
         ],
         "seg1": "",
         "seg2": "",
-        "x": 702,
-        "y": 143.75,
+        "x": 707,
+        "y": 171.75,
         "wires": []
     },
     {
-        "id": "c4420c74.0e5d9",
+        "id": "64dac7b3.0916e4",
         "type": "ui_gauge",
-        "z": "b5b0f440.1805c",
+        "z": "b70a9552.41c498",
         "name": "Temperature",
         "group": "b064caae.39df88",
         "order": 0,
@@ -89,9 +89,9 @@
         "wires": []
     },
     {
-        "id": "48f6b29e.e52ddc",
+        "id": "21addaae.7404a6",
         "type": "ui_form",
-        "z": "b5b0f440.1805c",
+        "z": "b70a9552.41c498",
         "name": "",
         "label": "Port",
         "group": "762b88ef.e1b7c4",
@@ -115,14 +115,14 @@
         "y": 309,
         "wires": [
             [
-                "927b02de.7de208"
+                "3189a7b9.0c0088"
             ]
         ]
     },
     {
-        "id": "927b02de.7de208",
+        "id": "3189a7b9.0c0088",
         "type": "function",
-        "z": "b5b0f440.1805c",
+        "z": "b70a9552.41c498",
         "name": "toMsgPort_Xbee",
         "func": "if(typeof msg.payload.mqtt_port != \"undefined\" ){\n    msg.port = msg.payload.mqtt_port;\n    return msg;\n}\n",
         "outputs": 1,
@@ -131,14 +131,14 @@
         "y": 408,
         "wires": [
             [
-                "370c0276.4cac72"
+                "f4f257ab.eff0d8"
             ]
         ]
     },
     {
-        "id": "e6e66b69.ae8ae8",
+        "id": "2092edfc.f9cfc6",
         "type": "function",
-        "z": "b5b0f440.1805c",
+        "z": "b70a9552.41c498",
         "name": "to string",
         "func": "msg.payload = msg.payload.toString();\nreturn msg;",
         "outputs": 1,
@@ -147,14 +147,14 @@
         "y": 218,
         "wires": [
             [
-                "f3169844.1ba968"
+                "c2778f45.e40f28"
             ]
         ]
     },
     {
-        "id": "f3169844.1ba968",
+        "id": "c2778f45.e40f28",
         "type": "json",
-        "z": "b5b0f440.1805c",
+        "z": "b70a9552.41c498",
         "name": "",
         "property": "payload",
         "action": "",
@@ -163,17 +163,17 @@
         "y": 306.54998779296875,
         "wires": [
             [
-                "dcda5822.720b2",
-                "e28610ac.02d77",
-                "88f0eda2.92da9",
-                "a5416ec8.03987"
+                "a6a8f640.664b18",
+                "6422359c.98899c",
+                "1e8cdcdb.eb0a53",
+                "71f337c7.ebfa34"
             ]
         ]
     },
     {
-        "id": "dcda5822.720b2",
+        "id": "a6a8f640.664b18",
         "type": "function",
-        "z": "b5b0f440.1805c",
+        "z": "b70a9552.41c498",
         "name": "filterOfHumi",
         "func": "if(msg.payload.id == \"mqttHumi_toPC\"){\n    msg.payload = msg.payload.message;\n    return msg;\n}\n",
         "outputs": 1,
@@ -182,14 +182,14 @@
         "y": 229,
         "wires": [
             [
-                "1ff56f2b.0caef5"
+                "d9b15ca8.58dd9"
             ]
         ]
     },
     {
-        "id": "e28610ac.02d77",
+        "id": "6422359c.98899c",
         "type": "function",
-        "z": "b5b0f440.1805c",
+        "z": "b70a9552.41c498",
         "name": "filterOfTemp",
         "func": "if(msg.payload.id == \"mqttTemp_toPC\"){\n    msg.payload = msg.payload.message;\n    return msg;\n}\n\n\n",
         "outputs": 1,
@@ -198,14 +198,14 @@
         "y": 285,
         "wires": [
             [
-                "c4420c74.0e5d9"
+                "64dac7b3.0916e4"
             ]
         ]
     },
     {
-        "id": "7267ff66.f55a44",
+        "id": "c2e2e10.3b74da",
         "type": "function",
-        "z": "b5b0f440.1805c",
+        "z": "b70a9552.41c498",
         "name": "Switch_Confirm",
         "func": "var string = msg.payload;\nmsg.payload = {\n    boo: \"yes\",\n    data: string\n};\nreturn msg;",
         "outputs": 1,
@@ -214,14 +214,14 @@
         "y": 640,
         "wires": [
             [
-                "9002b26f.142e28"
+                "74bb4960.f1e374"
             ]
         ]
     },
     {
-        "id": "9002b26f.142e28",
+        "id": "74bb4960.f1e374",
         "type": "function",
-        "z": "b5b0f440.1805c",
+        "z": "b70a9552.41c498",
         "name": "switchObjectTransfer",
         "func": "if(msg.payload.boo == \"yes\"){\n    var swi = msg.payload.data;\n    msg.payload = \"{\\\"id\\\": \\\"mqttswitch\\\", \\\"message\\\": \\\"\" + swi + \"\\\"}\";\n    return msg;\n\n}\n",
         "outputs": 1,
@@ -230,14 +230,14 @@
         "y": 555.010009765625,
         "wires": [
             [
-                "8fdadfef.c62d7"
+                "f2fb7df3.9e6e"
             ]
         ]
     },
     {
-        "id": "8fdadfef.c62d7",
+        "id": "f2fb7df3.9e6e",
         "type": "tcpoutport",
-        "z": "b5b0f440.1805c",
+        "z": "b70a9552.41c498",
         "host": "",
         "port": "",
         "beserver": "reply",
@@ -249,9 +249,9 @@
         "wires": []
     },
     {
-        "id": "88f0eda2.92da9",
+        "id": "1e8cdcdb.eb0a53",
         "type": "function",
-        "z": "b5b0f440.1805c",
+        "z": "b70a9552.41c498",
         "name": "filterOfMotion",
         "func": "if(msg.payload.id == \"mqttMotion_toPC\"){\n    msg.payload = msg.payload.message;\n    return msg;\n}\n",
         "outputs": 1,
@@ -260,14 +260,14 @@
         "y": 484,
         "wires": [
             [
-                "abd93039.667738"
+                "7f5feefc.6b506c"
             ]
         ]
     },
     {
-        "id": "abd93039.667738",
+        "id": "7f5feefc.6b506c",
         "type": "ui_text",
-        "z": "b5b0f440.1805c",
+        "z": "b70a9552.41c498",
         "group": "3f95d858.4ffb0c",
         "order": 0,
         "width": 0,
@@ -281,9 +281,9 @@
         "wires": []
     },
     {
-        "id": "a5416ec8.03987",
+        "id": "71f337c7.ebfa34",
         "type": "function",
-        "z": "b5b0f440.1805c",
+        "z": "b70a9552.41c498",
         "name": "trigger for lamp ",
         "func": "if(msg.payload.id == \"mqttTemp_toPC\"){\n    var temp = parseFloat(msg.payload.message);\n    if(temp > 26.5){\n        msg.payload = \"on\";\n        return msg;\n    }\n}\n\n",
         "outputs": 1,
@@ -292,29 +292,29 @@
         "y": 569.9099731445312,
         "wires": [
             [
-                "efb4ad6b.d0a0e",
-                "7267ff66.f55a44"
+                "b3565fb7.852138",
+                "c2e2e10.3b74da"
             ]
         ]
     },
     {
-        "id": "efb4ad6b.d0a0e",
+        "id": "b3565fb7.852138",
         "type": "debug",
-        "z": "b5b0f440.1805c",
+        "z": "b70a9552.41c498",
         "name": "",
         "active": true,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
         "complete": "true",
-        "x": 259,
-        "y": 120.53997802734375,
+        "x": 268,
+        "y": 132.53997802734375,
         "wires": []
     },
     {
-        "id": "370c0276.4cac72",
+        "id": "f4f257ab.eff0d8",
         "type": "tcpinport",
-        "z": "b5b0f440.1805c",
+        "z": "b70a9552.41c498",
         "name": "",
         "server": "server",
         "host": "",
@@ -328,8 +328,8 @@
         "y": 360.469970703125,
         "wires": [
             [
-                "e6e66b69.ae8ae8",
-                "9002b26f.142e28"
+                "2092edfc.f9cfc6",
+                "74bb4960.f1e374"
             ]
         ]
     },
