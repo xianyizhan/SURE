@@ -1,62 +1,62 @@
 [
     {
-        "id": "763196da.9555e8",
+        "id": "78afd858.36b478",
         "type": "tab",
         "label": "mqtt_server",
         "disabled": false,
         "info": ""
     },
     {
-        "id": "5c47333d.47614c",
+        "id": "c5133d92.d07ff",
         "type": "mqtt out",
-        "z": "763196da.9555e8",
+        "z": "78afd858.36b478",
         "name": "Lamp",
         "topic": "room/lamp",
         "qos": "2",
         "retain": "",
         "broker": "2b5baffe.399af",
         "x": 610,
-        "y": 460,
+        "y": 480,
         "wires": []
     },
     {
-        "id": "fcd82d77.edff4",
+        "id": "3f8ff72a.fbff48",
         "type": "mqtt in",
-        "z": "763196da.9555e8",
+        "z": "78afd858.36b478",
         "name": "Temperature",
-        "topic": "out/temperature",
+        "topic": "room/temperature",
         "qos": "2",
         "broker": "2b5baffe.399af",
         "x": 90,
         "y": 620,
         "wires": [
             [
-                "99fd9e66.40101",
-                "69f9601f.5b34e"
+                "576f7c32.3c1404",
+                "4c4278c2.bfd9f8"
             ]
         ]
     },
     {
-        "id": "a27d6ffc.8b20f",
+        "id": "c6fdd75f.40b9f8",
         "type": "mqtt in",
-        "z": "763196da.9555e8",
+        "z": "78afd858.36b478",
         "name": "Humidity",
-        "topic": "out/humidity",
+        "topic": "room/humidity",
         "qos": "2",
         "broker": "2b5baffe.399af",
         "x": 80,
         "y": 680,
         "wires": [
             [
-                "99fd9e66.40101",
-                "69f9601f.5b34e"
+                "576f7c32.3c1404",
+                "4c4278c2.bfd9f8"
             ]
         ]
     },
     {
-        "id": "97fa8ea7.71c68",
+        "id": "1a38332d.4c1add",
         "type": "tcp request",
-        "z": "763196da.9555e8",
+        "z": "78afd858.36b478",
         "server": "",
         "port": "",
         "out": "sit",
@@ -66,14 +66,14 @@
         "y": 680,
         "wires": [
             [
-                "bfbb584d.16ab08"
+                "7a5aa469.aef27c"
             ]
         ]
     },
     {
-        "id": "4d5ae173.12637",
+        "id": "452b9c20.23bd94",
         "type": "function",
-        "z": "763196da.9555e8",
+        "z": "78afd858.36b478",
         "name": "Set up host",
         "func": "\nvar mqttHost = context.get('mqttHost')||0; //set counter\nvar mqttPort = context.get('mqttPort')||0;\n\nif((typeof msg.payload.mqtt_host != \"undefined\")&&(typeof msg.payload.mqtt_port != \"undefined\")){\n    mqttHost = msg.payload.mqtt_host;\n    context.set('mqttHost',mqttHost);\n    \n    mqttPort = msg.payload.mqtt_port;\n    context.set('mqttPort',mqttPort);\n    \n    msg.payload = \"{\\\"id\\\": \\\"connect\\\"}\";\n}\nmsg.host = mqttHost;\nmsg.port = mqttPort;\n\nreturn msg; \n",
         "outputs": 1,
@@ -82,15 +82,15 @@
         "y": 760,
         "wires": [
             [
-                "97fa8ea7.71c68",
-                "69f9601f.5b34e"
+                "1a38332d.4c1add",
+                "4c4278c2.bfd9f8"
             ]
         ]
     },
     {
-        "id": "30e2d4f8.37914c",
+        "id": "de72936b.ac515",
         "type": "ui_form",
-        "z": "763196da.9555e8",
+        "z": "78afd858.36b478",
         "name": "",
         "label": "",
         "group": "2329175e.ba2ef8",
@@ -121,14 +121,14 @@
         "y": 480,
         "wires": [
             [
-                "4d5ae173.12637"
+                "452b9c20.23bd94"
             ]
         ]
     },
     {
-        "id": "d69fcdd7.e870c",
+        "id": "a9941be6.696a98",
         "type": "function",
-        "z": "763196da.9555e8",
+        "z": "78afd858.36b478",
         "name": "switch_set_lamp",
         "func": "if(msg.payload.id == \"mqttswitch\"){\n    var b = msg.payload.message.toString();\n    msg.payload = b;\n    return msg;\n} ",
         "outputs": 1,
@@ -137,15 +137,15 @@
         "y": 880,
         "wires": [
             [
-                "5c47333d.47614c",
-                "6f2a1a84.81dda4"
+                "c5133d92.d07ff",
+                "432eda0f.06b784"
             ]
         ]
     },
     {
-        "id": "bfbb584d.16ab08",
+        "id": "7a5aa469.aef27c",
         "type": "function",
-        "z": "763196da.9555e8",
+        "z": "78afd858.36b478",
         "name": "to string",
         "func": "msg.payload = msg.payload.toString();\nreturn msg;",
         "outputs": 1,
@@ -154,14 +154,14 @@
         "y": 700,
         "wires": [
             [
-                "70ebe0b3.a0f32"
+                "f9e4f596.689d08"
             ]
         ]
     },
     {
-        "id": "70ebe0b3.a0f32",
+        "id": "f9e4f596.689d08",
         "type": "json",
-        "z": "763196da.9555e8",
+        "z": "78afd858.36b478",
         "name": "",
         "property": "payload",
         "action": "",
@@ -170,30 +170,30 @@
         "y": 860,
         "wires": [
             [
-                "d69fcdd7.e870c"
+                "a9941be6.696a98"
             ]
         ]
     },
     {
-        "id": "99fd9e66.40101",
+        "id": "576f7c32.3c1404",
         "type": "function",
-        "z": "763196da.9555e8",
+        "z": "78afd858.36b478",
         "name": "toString",
-        "func": "if(msg._topic == \"out/humidity\"){\n    var string = msg.payload.toString();\n    msg.payload = \"{\\\"id\\\": \\\"mqttHumi_toPC\\\", \\\"message\\\": \\\"\" + string +\"\\\" }\";\n    return msg;\n}\nif(msg._topic == \"out/temperature\"){\n    var string = msg.payload.toString();\n    msg.payload = \"{\\\"id\\\": \\\"mqttTemp_toPC\\\", \\\"message\\\": \\\"\" + string +\"\\\" }\";\n    return msg;\n}\n\nif(msg._topic == \"room/motion\"){\n    var string = msg.payload.toString();\n    msg.payload = \"{\\\"id\\\": \\\"mqttMotion_toPC\\\", \\\"message\\\": \\\"\" + string +\"\\\" }\";\n    return msg;\n}",
+        "func": "if(msg._topic == \"room/humidity\"){\n    var string = msg.payload.toString();\n    msg.payload = \"{\\\"id\\\": \\\"mqttHumi_toPC\\\", \\\"message\\\": \\\"\" + string +\"\\\" }\";\n    return msg;\n}\nif(msg._topic == \"room/temperature\"){\n    var string = msg.payload.toString();\n    msg.payload = \"{\\\"id\\\": \\\"mqttTemp_toPC\\\", \\\"message\\\": \\\"\" + string +\"\\\" }\";\n    return msg;\n}\n\nif(msg._topic == \"room/motion\"){\n    var string = msg.payload.toString();\n    msg.payload = \"{\\\"id\\\": \\\"mqttMotion_toPC\\\", \\\"message\\\": \\\"\" + string +\"\\\" }\";\n    return msg;\n}",
         "outputs": 1,
         "noerr": 0,
         "x": 170,
         "y": 840,
         "wires": [
             [
-                "4d5ae173.12637"
+                "452b9c20.23bd94"
             ]
         ]
     },
     {
-        "id": "6f2a1a84.81dda4",
+        "id": "432eda0f.06b784",
         "type": "debug",
-        "z": "763196da.9555e8",
+        "z": "78afd858.36b478",
         "name": "",
         "active": true,
         "tosidebar": true,
@@ -205,9 +205,9 @@
         "wires": []
     },
     {
-        "id": "69f9601f.5b34e",
+        "id": "4c4278c2.bfd9f8",
         "type": "debug",
-        "z": "763196da.9555e8",
+        "z": "78afd858.36b478",
         "name": "",
         "active": true,
         "tosidebar": true,
@@ -219,9 +219,9 @@
         "wires": []
     },
     {
-        "id": "74b25de.bca87a4",
+        "id": "c3800b7e.c01eb8",
         "type": "mqtt in",
-        "z": "763196da.9555e8",
+        "z": "78afd858.36b478",
         "name": "Motion",
         "topic": "room/motion",
         "qos": "2",
@@ -230,15 +230,15 @@
         "y": 940,
         "wires": [
             [
-                "b97d1dea.d6aff",
-                "99fd9e66.40101"
+                "31f05f7c.6e2d",
+                "576f7c32.3c1404"
             ]
         ]
     },
     {
-        "id": "b97d1dea.d6aff",
+        "id": "31f05f7c.6e2d",
         "type": "debug",
-        "z": "763196da.9555e8",
+        "z": "78afd858.36b478",
         "name": "",
         "active": true,
         "tosidebar": true,
@@ -250,9 +250,9 @@
         "wires": []
     },
     {
-        "id": "7e2a5b9.72149a4",
+        "id": "ce2e2ac0.02d0a8",
         "type": "debug",
-        "z": "763196da.9555e8",
+        "z": "78afd858.36b478",
         "name": "",
         "active": false,
         "tosidebar": true,
@@ -264,9 +264,9 @@
         "wires": []
     },
     {
-        "id": "a408325a.5213f",
+        "id": "bf78e8c4.6fcb08",
         "type": "mosca in",
-        "z": "763196da.9555e8",
+        "z": "78afd858.36b478",
         "mqtt_port": "11883",
         "mqtt_ws_port": 8080,
         "name": "",
@@ -274,10 +274,10 @@
         "password": "",
         "dburl": "",
         "x": 180,
-        "y": 340,
+        "y": 360,
         "wires": [
             [
-                "7e2a5b9.72149a4"
+                "ce2e2ac0.02d0a8"
             ]
         ]
     },
