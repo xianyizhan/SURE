@@ -1,0 +1,548 @@
+[
+    {
+        "id": "9947d194.0da3d",
+        "type": "tab",
+        "label": "Integrated",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "5d0e40e2.f194f",
+        "type": "function",
+        "z": "9947d194.0da3d",
+        "name": "to string",
+        "func": "if(typeof msg.payload.data != \"undefined\"){\n    var string = msg.payload.data.toString();\n    msg.payload = \"{\\\"id\\\": \\\"text_toPC\\\", \\\"message\\\": \\\"\" + string +\"\\\" }\";\n    return msg;\n}",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 140,
+        "y": 320,
+        "wires": [
+            [
+                "d3638383.eafd6"
+            ]
+        ]
+    },
+    {
+        "id": "8922cb4d.1143a8",
+        "type": "function",
+        "z": "9947d194.0da3d",
+        "name": "beacon_8506",
+        "func": "var tar = \"0cf3ee0d4007\";\nvar wait = 10; // time out if device is out of range\nvar count = context.get('count')||0; //set counter\n\n// the target uuid is the required device \nif (msg.peripheralUuid == tar){\n    //display rssi value\n    var x = msg.rssi; \n    // device detected, counter = 0\n    count = 0;\n    context.set('count',count);\n    msg.count = count;\n    msg.payload = \"{\\\"id\\\": \\\"8506\\\", \\\"message\\\": \\\"\" + x +\"\\\"}\";\n    return msg;\n}\nelse if (msg.peripheralUuid != tar){\n    // not our device, counter++;\n    count += 1;\n    context.set('count',count);\n    msg.count = count;\n    // we have not receive the signal of target \n    // for a while, say that it is offline or \n    // out of range. \n    if (msg.count > wait || msg.noSig == 1){\n        x = -200;\n        // reset counter for next use\n        count = 0;\n        context.set('count',count);\n        msg.count = count;\n        msg.payload = \"{\\\"id\\\": \\\"8506\\\", \\\"message\\\": \\\"\" + x +\"\\\"}\";\n        return msg;\n        \n    }\n\n}\n\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 760,
+        "y": 220,
+        "wires": [
+            [
+                "e3b9e072.2f50b"
+            ]
+        ]
+    },
+    {
+        "id": "447dd2da.c3101c",
+        "type": "function",
+        "z": "9947d194.0da3d",
+        "name": "filter_Beacon",
+        "func": "var tarMin = \"0cf3ee000000\";\nvar tarMax = \"0cf3eeffffff\";\nvar count_no = context.get('count_no')||0; //set counter\nvar time = 450;\n\n// the target uuid is within the range of 0x0cf3ee... because only the frist three octets are the common adress\nif (msg.peripheralUuid >= tarMin && msg.peripheralUuid <= tarMax){\n    // device detected, counter = 0\n    count_no = 0;\n    context.set('count_no',count_no);\n    msg.count_no = count_no;\n    msg.noSig = 0;\n    return msg;\n}\n\nelse{\n    count_no += 1;\n    context.set('count_no',count_no);\n    msg.count_no = count_no;\n    msg.noSig = 0;\n\n    if (msg.count_no > time){\n        msg.noSig = 1;\n        // reset counter for next use\n        count_no = 0;\n        context.set('count_no',count_no);\n        msg.count_no = count_no;\n        return msg;\n    }\n}\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 610,
+        "y": 260,
+        "wires": [
+            [
+                "8922cb4d.1143a8",
+                "39b19932.5777e6"
+            ]
+        ]
+    },
+    {
+        "id": "6165d2ee.70506c",
+        "type": "function",
+        "z": "9947d194.0da3d",
+        "name": "switch_set",
+        "func": "if(msg.payload.id == \"switch\"){\n    var b = msg.payload.message.toString();\n    if(b == \"true\"){\n        msg.payload = {\n        scan: true\n        }\n    }\n    if(b == \"false\"){\n        msg.payload = {\n        scan: false\n        }\n    }\n    return msg;\n} ",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 270,
+        "y": 200,
+        "wires": [
+            [
+                "e02dedfa.3eb4b",
+                "74696080.63332"
+            ]
+        ]
+    },
+    {
+        "id": "6b3f267f.3dcca8",
+        "type": "function",
+        "z": "9947d194.0da3d",
+        "name": "to string",
+        "func": "msg.payload = msg.payload.toString();\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 300,
+        "y": 80,
+        "wires": [
+            [
+                "7f3c0bf4.f07cf4"
+            ]
+        ]
+    },
+    {
+        "id": "7f3c0bf4.f07cf4",
+        "type": "json",
+        "z": "9947d194.0da3d",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 90,
+        "y": 180,
+        "wires": [
+            [
+                "6165d2ee.70506c"
+            ]
+        ]
+    },
+    {
+        "id": "74696080.63332",
+        "type": "debug",
+        "z": "9947d194.0da3d",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "x": 490,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "39b19932.5777e6",
+        "type": "function",
+        "z": "9947d194.0da3d",
+        "name": "beacon_25015",
+        "func": "var tar = \"0cf3ee0061b7\";\nvar wait = 10; // time out if device is out of range\nvar count2 = context.get('count2')||0; //set counter\n\n// the target uuid is the required device \nif (msg.peripheralUuid == tar){\n    //display rssi value\n    var x = msg.rssi; \n    // device detected, counter = 0\n    count2 = 0;\n    context.set('count2',count2);\n    msg.count2 = count2;\n    msg.payload = \"{\\\"id\\\": \\\"25015\\\", \\\"message\\\": \\\"\" + x +\"\\\"}\";\n    return msg;\n}\nelse if (msg.peripheralUuid != tar){\n    // not our device, counter++;\n    count2 += 1;\n    context.set('count2',count2);\n    msg.count2 = count2;\n    // we have not receive the signal of target \n    // for a while, say that it is offline or \n    // out of range. \n    if (msg.count2 > wait || msg.noSig == 1){\n        x = -200;\n        // reset counter for next use\n        count2 = 0;\n        context.set('count2',count2);\n        msg.count2 = count2;\n        msg.payload = \"{\\\"id\\\": \\\"25015\\\", \\\"message\\\": \\\"\" + x +\"\\\"}\";\n        return msg;\n    }\n    \n}\n\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 780,
+        "y": 380,
+        "wires": [
+            [
+                "e3b9e072.2f50b"
+            ]
+        ]
+    },
+    {
+        "id": "180bf674.cd284a",
+        "type": "ui_form",
+        "z": "9947d194.0da3d",
+        "name": "Set up",
+        "label": "Set up ",
+        "group": "1513300.06618d",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "options": [
+            {
+                "label": "Xbee",
+                "value": "xb",
+                "type": "text",
+                "required": false
+            },
+            {
+                "label": "Xbee port",
+                "value": "xb_port",
+                "type": "text",
+                "required": false
+            },
+            {
+                "label": "BLE",
+                "value": "bl",
+                "type": "text",
+                "required": false
+            },
+            {
+                "label": "BLE port",
+                "value": "bl_port",
+                "type": "text",
+                "required": false
+            }
+        ],
+        "formValue": {
+            "xb": "",
+            "xb_port": "",
+            "bl": "",
+            "bl_port": ""
+        },
+        "payload": "",
+        "topic": "",
+        "x": 310,
+        "y": 300,
+        "wires": [
+            [
+                "d3638383.eafd6",
+                "e3b9e072.2f50b"
+            ]
+        ]
+    },
+    {
+        "id": "d3638383.eafd6",
+        "type": "function",
+        "z": "9947d194.0da3d",
+        "name": "Set up host_xbee",
+        "func": "\nvar xbeeHost = context.get('xbeeHost')||0; //set counter\nvar xbeePort = context.get('xbeePort')||0;\nvar admin = context.get('admin')||0;\nvar pass = context.get('pass')||0;\n\nif((typeof msg.payload.admin != \"undefined\")&&(typeof msg.payload.pass != \"undefined\")){\n    admin = msg.payload.admin;\n    context.set('admin',admin);\n    \n    pass = msg.payload.pass;\n    context.set('pass',pass);\n}\n\nelse if(( msg.payload.bl !== \"\")&&(msg.payload.bl_port !== \"\")&&(admin == \"adminx\")&&(pass == \"1234\")){\n    msg.payload = \"no right\";\n}\n\nelse if((typeof msg.payload.xb != \"undefined\")&&(typeof msg.payload.xb_port != \"undefined\")&&(admin == \"admin\")&&(pass == \"123\")){\n    xbeeHost = msg.payload.xb;\n    context.set('xbeeHost',xbeeHost);\n    \n    xbeePort = msg.payload.xb_port;\n    context.set('xbeePort',xbeePort);\n    \n    msg.payload = \"{\\\"id\\\": \\\"connect\\\"}\";\n}\n\nelse if((typeof msg.payload.xb != \"undefined\")&&(typeof msg.payload.xb_port != \"undefined\")&&(admin == \"adminx\")&&(pass == \"1234\")){\n    xbeeHost = msg.payload.xb;\n    context.set('xbeeHost',xbeeHost);\n    \n    xbeePort = msg.payload.xb_port;\n    context.set('xbeePort',xbeePort);\n    \n    msg.payload = \"{\\\"id\\\": \\\"connect\\\"}\";\n}\n\n\nmsg.host = xbeeHost;\nmsg.port = xbeePort;\n\nreturn msg; \n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 350,
+        "y": 380,
+        "wires": [
+            [
+                "23737104.9c8e0e",
+                "3474cf56.28465"
+            ]
+        ]
+    },
+    {
+        "id": "f5b93ac3.d38c98",
+        "type": "function",
+        "z": "9947d194.0da3d",
+        "name": "to string",
+        "func": "msg.payload = msg.payload.toString();\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 620,
+        "y": 480,
+        "wires": [
+            [
+                "a56e1971.7d2708"
+            ]
+        ]
+    },
+    {
+        "id": "a56e1971.7d2708",
+        "type": "json",
+        "z": "9947d194.0da3d",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 770,
+        "y": 540,
+        "wires": [
+            [
+                "7fb04dea.af4644"
+            ]
+        ]
+    },
+    {
+        "id": "7fb04dea.af4644",
+        "type": "function",
+        "z": "9947d194.0da3d",
+        "name": "transmitSetUp",
+        "func": "if(msg.payload.id == \"text_toPi\"){\n    var instruction = msg.payload.message.toString();\n\n    var myDataFrame = {\n            type: 0x10,\n            id: 0x01,\n            destination64: \"0013A2004031FBCD\",\n            destination16: \"fffe\",\n            broadcastRadius: 0x00,\n            options: 0x00,\n            data: instruction\n    };\n    msg.payload = myDataFrame;\n    return msg;\n}\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 920,
+        "y": 580,
+        "wires": [
+            [
+                "69317ade.5133f4",
+                "8e326ffe.70231"
+            ]
+        ]
+    },
+    {
+        "id": "69317ade.5133f4",
+        "type": "debug",
+        "z": "9947d194.0da3d",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "x": 1090,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "e3b9e072.2f50b",
+        "type": "function",
+        "z": "9947d194.0da3d",
+        "name": "Set up host_ble",
+        "func": "\nvar bleHost = context.get('bleHost')||0; //set counter\nvar blePort = context.get('blePort')||0;\nvar admin = context.get('admin')||0;\nvar pass = context.get('pass')||0;\n\nif((typeof msg.payload.admin != \"undefined\")&&(typeof msg.payload.pass != \"undefined\")){\n    admin = msg.payload.admin;\n    context.set('admin',admin);\n    \n    pass = msg.payload.pass;\n    context.set('pass',pass);\n}\nelse if(((msg.payload.xb !== \"\")&&(msg.payload.xb_port !== \"\")&&(admin == \"adminb\")&&(pass == \"12345\")) && (typeof msg.peripheralUuid == \"undefined\")){\n    \n    msg.payload = \"no right\";\n}\n\nelse if((typeof msg.payload.bl != \"undefined\")&&(typeof msg.payload.bl_port != \"undefined\")&&(admin == \"admin\")&&(pass == \"123\")){\n    bleHost = msg.payload.bl;\n    context.set('bleHost',bleHost);\n    \n    blePort = msg.payload.bl_port;\n    context.set('blePort',blePort);\n    \n    msg.payload = \"{\\\"id\\\": \\\"connect\\\"}\";\n}\n\nelse if((typeof msg.payload.bl != \"undefined\")&&(typeof msg.payload.bl_port != \"undefined\")&&(admin == \"adminb\")&&(pass == \"12345\")){\n    bleHost = msg.payload.bl;\n    context.set('bleHost',bleHost);\n    \n    blePort = msg.payload.bl_port;\n    context.set('blePort',blePort);\n    \n    msg.payload = \"{\\\"id\\\": \\\"connect\\\"}\";\n}\n\nmsg.host = bleHost;\nmsg.port = blePort;\n\nreturn msg; \n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 980,
+        "y": 340,
+        "wires": [
+            [
+                "51967ca3.d433c4",
+                "470939c1.93d5e8"
+            ]
+        ]
+    },
+    {
+        "id": "51967ca3.d433c4",
+        "type": "tcp request",
+        "z": "9947d194.0da3d",
+        "server": "",
+        "port": "",
+        "out": "sit",
+        "splitc": " ",
+        "name": "tcp_ble",
+        "x": 500,
+        "y": 100,
+        "wires": [
+            [
+                "6b3f267f.3dcca8",
+                "bce40bee.1c9378"
+            ]
+        ]
+    },
+    {
+        "id": "bce40bee.1c9378",
+        "type": "debug",
+        "z": "9947d194.0da3d",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "x": 650,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "d085ed46.193b1",
+        "type": "xbee-rx",
+        "z": "9947d194.0da3d",
+        "name": "",
+        "xBee": "ecb94d4c.99e8f",
+        "x": 100,
+        "y": 440,
+        "wires": [
+            [
+                "5d0e40e2.f194f"
+            ]
+        ]
+    },
+    {
+        "id": "8e326ffe.70231",
+        "type": "xbee-tx",
+        "z": "9947d194.0da3d",
+        "name": "",
+        "xBee": "ecb94d4c.99e8f",
+        "x": 1120,
+        "y": 620,
+        "wires": []
+    },
+    {
+        "id": "e02dedfa.3eb4b",
+        "type": "scan ble",
+        "z": "9947d194.0da3d",
+        "uuids": "",
+        "duplicates": true,
+        "name": "",
+        "x": 450,
+        "y": 220,
+        "wires": [
+            [
+                "447dd2da.c3101c"
+            ]
+        ]
+    },
+    {
+        "id": "23737104.9c8e0e",
+        "type": "tcp request",
+        "z": "9947d194.0da3d",
+        "server": "",
+        "port": "",
+        "out": "sit",
+        "splitc": " ",
+        "name": "tcp_xbee",
+        "x": 490,
+        "y": 440,
+        "wires": [
+            [
+                "f5b93ac3.d38c98"
+            ]
+        ]
+    },
+    {
+        "id": "886bf687.e2eed8",
+        "type": "ui_form",
+        "z": "9947d194.0da3d",
+        "name": "Login",
+        "label": "Login",
+        "group": "88fd773e.82a548",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "options": [
+            {
+                "label": "Admin",
+                "value": "admin",
+                "type": "text",
+                "required": true
+            },
+            {
+                "label": "Password",
+                "value": "pass",
+                "type": "password",
+                "required": true
+            }
+        ],
+        "formValue": {
+            "admin": "",
+            "pass": ""
+        },
+        "payload": "",
+        "topic": "",
+        "x": 50,
+        "y": 620,
+        "wires": [
+            [
+                "d3638383.eafd6",
+                "e3b9e072.2f50b",
+                "f0bef90c.f37888"
+            ]
+        ]
+    },
+    {
+        "id": "f0bef90c.f37888",
+        "type": "function",
+        "z": "9947d194.0da3d",
+        "name": "Login filter",
+        "func": "\nif(msg.payload.admin == \"admin\" && msg.payload.pass == \"123\"){\n  msg.payload = \"admin name and password correct, please set up.\";\n  return msg;\n}\n\nelse if(msg.payload.admin == \"adminx\" && msg.payload.pass == \"1234\"){\n  msg.payload = \"admin name and password correct, please set up Xbee. You have no authority to set up BLE.\";\n  return msg;\n}\n\nelse if(msg.payload.admin == \"adminb\" && msg.payload.pass == \"12345\"){\n  msg.payload = \"admin name and password correct, please set up BLE. You have no authority to set up Xbee.\";\n  return msg;\n}\n\nelse{\n  msg.payload = \"wrong admin name or password.\";\n  return msg;\n}\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 310,
+        "y": 680,
+        "wires": [
+            [
+                "1f327b8f.a5ebc4"
+            ]
+        ]
+    },
+    {
+        "id": "1f327b8f.a5ebc4",
+        "type": "ui_toast",
+        "z": "9947d194.0da3d",
+        "position": "dialog",
+        "displayTime": "3",
+        "highlight": "",
+        "outputs": 1,
+        "ok": "OK",
+        "cancel": "",
+        "topic": "Admin",
+        "name": "Log in",
+        "x": 460,
+        "y": 700,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "470939c1.93d5e8",
+        "type": "function",
+        "z": "9947d194.0da3d",
+        "name": "no right ble",
+        "func": "if(msg.payload == \"no right\"){\n    msg.payload = \"you cannot set Xbee specifications. try again\";\n    return msg;\n    \n}\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 990,
+        "y": 460,
+        "wires": [
+            [
+                "362b56a4.a2e97a"
+            ]
+        ]
+    },
+    {
+        "id": "362b56a4.a2e97a",
+        "type": "ui_toast",
+        "z": "9947d194.0da3d",
+        "position": "dialog",
+        "displayTime": "3",
+        "highlight": "",
+        "outputs": 1,
+        "ok": "OK",
+        "cancel": "",
+        "topic": "",
+        "name": " user no rights",
+        "x": 960,
+        "y": 760,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "3474cf56.28465",
+        "type": "function",
+        "z": "9947d194.0da3d",
+        "name": "no right xbee",
+        "func": "if(msg.payload == \"no right\"){\n    msg.payload = \"you cannot set BLE specifications. try again\";\n    return msg;\n}\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 530,
+        "y": 560,
+        "wires": [
+            [
+                "362b56a4.a2e97a"
+            ]
+        ]
+    },
+    {
+        "id": "1513300.06618d",
+        "type": "ui_group",
+        "z": "",
+        "name": "Admin",
+        "tab": "abb03a7a.2ceb58",
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "ecb94d4c.99e8f",
+        "type": "xbee-config",
+        "z": "",
+        "apiMode": "1",
+        "rawFrames": false,
+        "convertAdc": true,
+        "vrefAdc": "1200",
+        "serialPort": "/dev/ttyUSB0",
+        "lock": true,
+        "baudRate": "9600",
+        "dataBits": "8",
+        "stopBits": "1",
+        "parity": "none",
+        "bufferSize": "65536",
+        "rtscts": false,
+        "xon": false,
+        "xoff": false,
+        "xany": false,
+        "vmin": "1",
+        "vtime": "0"
+    },
+    {
+        "id": "88fd773e.82a548",
+        "type": "ui_group",
+        "z": "",
+        "name": "Login",
+        "tab": "abb03a7a.2ceb58",
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "abb03a7a.2ceb58",
+        "type": "ui_tab",
+        "z": "",
+        "name": "Gateway -- Server",
+        "icon": "dashboard"
+    }
+]
